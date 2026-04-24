@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Centro de Edición de Documentos</h1>
-
     <h1>{% if doc_actual %}✏️ Editando: {{ doc_actual['titulo'] }}{% else %}📝 Redactar Nuevo Documento{% endif %}</h1>
 
-    <form method="POST" action="/editor" style="background: var(--sidebar-bg); padding: 20px; border-radius: 8px;">
+    <form method="POST" action="{{ url_for('main.editor') }}" style="background: var(--sidebar-bg); padding: 20px; border-radius: 8px;">
         
         {% if doc_actual %}
             <input type="hidden" name="id_doc" value="{{ doc_actual['id'] }}">
@@ -23,12 +21,12 @@
         </select><br>
         
         <label>Título del Documento:</label><br>
-<input type="text" name="titulo" required style="width: 97%; padding: 8px; margin: 10px 0;" 
-       value="{% if doc_actual %}{{ doc_actual['titulo'] }}{% endif %}"><br>
+        <input type="text" name="titulo" required style="width: 97%; padding: 8px; margin: 10px 0;" 
+               value="{% if doc_actual %}{{ doc_actual['titulo'] }}{% endif %}"><br>
 
-<label>Autor / Desarrollado por:</label><br>
-<input type="text" name="autor" placeholder="Ej: Nombre y Apellidos" style="width: 97%; padding: 8px; margin: 10px 0;" 
-       value="{% if doc_actual %}{{ doc_actual['autor'] or '' }}{% endif %}"><br>
+        <label>Autor / Desarrollado por:</label><br>
+        <input type="text" name="autor" placeholder="Ej: Roberto Tejado" style="width: 97%; padding: 8px; margin: 10px 0;" 
+               value="{% if doc_actual %}{{ doc_actual['autor'] or '' }}{% endif %}"><br>
         
         <label>Contenido del Documento:</label><br>
         <textarea id="tinymce-editor" name="contenido_texto" rows="20" style="width: 100%;">
@@ -39,28 +37,24 @@
             {% if doc_actual %}Actualizar Documentación{% else %}Guardar Nueva Documentación{% endif %}
         </button>
         {% if doc_actual %}
-            <a href="/documentos" class="btn" style="background: #64748b; margin-left: 10px;">Cancelar</a>
+            <a href="{{ url_for('main.gestion_documentos') }}" class="btn" style="background: #64748b; margin-left: 10px;">Cancelar</a>
         {% endif %}
     </form>
 
-     
-<script src="https://cdn.tiny.cloud/1/TU_API_KEY/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-
+    <script src="https://cdn.tiny.cloud/1/59rd1s0awhu4avanlwqsgh4irgrgbho9gh68u3nwh5traxn2/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
       tinymce.init({
         selector: '#tinymce-editor',
         plugins: 'image code table lists link media',
         toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table | code',
         
-        // Configuración para subir imágenes automáticamente a Flask
-        images_upload_url: '/upload_attachment',
+        images_upload_url: "{{ url_for('main.upload_attachment') }}",
         automatic_uploads: true,
         file_picker_types: 'image',
         
         height: 600,
         menubar: false,
         
-        // Adicional: adapta el editor al modo oscuro si está activado
         skin: (document.documentElement.getAttribute('data-theme') === 'dark' ? 'oxide-dark' : 'oxide'),
         content_css: (document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default')
       });
