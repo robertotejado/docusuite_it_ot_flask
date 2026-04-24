@@ -1,0 +1,13 @@
+# --- Framework Core ---
+Flask
+Werkzeug
+
+# --- Exportación a Microsoft Word ---
+python-docx
+htmldocx
+
+# --- Exportación a PDF (Interpretación HTML/CSS) ---
+xhtml2pdf
+
+# --- Exportación a Markdown y TXT ---
+markdownify
