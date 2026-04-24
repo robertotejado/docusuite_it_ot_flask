@@ -13,7 +13,7 @@
         </tr>
         {% for d in documentos %}
         <tr style="border-bottom: 1px solid var(--border-color);">
-            <form method="POST" action="/documentos">
+            <form method="POST" action="{{ url_for('main.gestion_documentos') }}">
                 <td style="padding: 15px 10px;">#{{ d['id'] }}</td>
                 <td>
                     <select name="id_proyecto" style="padding: 6px; max-width: 150px;">
@@ -34,15 +34,15 @@
                     <button type="submit" class="btn" style="background: var(--primary); padding: 6px 10px;">Guardar Info</button>
             </form>
             
-            <a href="/editor/{{ d['id'] }}" class="btn" style="background: #16a34a; padding: 6px 10px;">✏️ Editar Contenido</a>
+            <a href="{{ url_for('main.editor', id_doc=d['id']) }}" class="btn" style="background: #16a34a; padding: 6px 10px;">✏️ Editar Contenido</a>
             
-            <form method="POST" action="/documentos/eliminar/{{ d['id'] }}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este documento permanentemente?');">
+            <form method="POST" action="{{ url_for('main.eliminar_documento', id=d['id']) }}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este documento permanentemente?');">
                 <button type="submit" class="btn" style="background: #dc2626; padding: 6px 10px;">🗑️ Borrar</button>
             </form>
                 </td>
         </tr>
         {% else %}
-        <tr><td colspan="5" style="padding: 20px;">No hay documentos creados aún. <a href="/editor">Crea el primero aquí.</a></td></tr>
+        <tr><td colspan="5" style="padding: 20px;">No hay documentos creados aún. <a href="{{ url_for('main.editor') }}">Crea el primero aquí.</a></td></tr>
         {% endfor %}
     </table>
 {% endblock %}
