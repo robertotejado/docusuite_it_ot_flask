@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  docusuite:
+    container_name: docusuite_app
+    # Si quieres que Docker Compose la compile por ti usando el Dockerfile local:
+    build: . 
+    # El nombre que le dará a la imagen (o la que descargará de Docker Hub si no construyes):
+    image: robertotejado/docusuite-it-ot:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      # RUTAS DE PERSISTENCIA (Asegúrate de haber creado el archivo y la carpeta antes)
+      - ./docusuite.db:/app/docusuite.db
+      - ./attachments:/app/static/attachments
+    restart: unless-stopped
+    environment:
+      - FLASK_DEBUG=0 # Modo producción
